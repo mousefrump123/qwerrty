@@ -1,0 +1,370 @@
+﻿@using PagedList;
+@using PagedList.Mvc;
+@model PagedList.IPagedList<TMDT.Models.VOUCHERSHOP>
+@{
+    ViewBag.Title = "QLVoucherShop";
+    Layout = "~/Views/Shared/Layout-NgBan.cshtml";
+}
+
+<div class="col l-9-1 m-12 c-12">
+    <div class="home-product">
+        <div class="row sm-gutter" style="padding-right: 16px;">
+            <div class="title-page">
+                <div class="title-page__link">
+                    <a href="@Url.Action("KenhNgBan", "NgBan")" class="title-page__link-label">Trang chủ</a>
+                    <i class='bx bx-chevron-right'></i>
+                    <a href="@Url.Action("QLVoucherShop", "VoucherShop")" class="title-page__link-label" style="color: black;">Voucher của Shop</a>
+                </div>
+            </div>
+            <div class="product-list-main">
+                <div class="">
+                    <div class="product-list-main-header">
+                        <div class="product-list-main-title">
+                            <div class="product-list-main-info-title">Danh sách mã giảm giá</div>
+                            <div style="color: #999; font-size: 1.4rem; font-weight: 300; margin-top: 10px;">Tạo Mã giảm giá ngay bây giờ để thu hút người mua.</div>
+                        </div>
+                    </div>
+                    <div class="fixed-container" style="top: 56px; z-index: 1000">
+                        <div class="portal-panel">
+                            <div class="tabs tafi-tabs tafi-tabs-line tafi-tabs-top">
+                                <div class="tafi-tabs__nav">
+                                    <div class="tafi-tabs__nav-warp">
+                                        <div class="tafi-tabs__nav-tabs" style="transform: translateX(0px);">
+                                            <div class="tafi-tabs__nav-tab active" style="white-space: normal;">
+                                                <span class="tabs__tab">Tất cả</span>
+                                            </div>
+                                            <div class="tafi-tabs__nav-tab" style="white-space: normal;">
+                                                <span class="tabs__tab">Đang diễn ra</span>
+                                            </div>
+                                            <div class="tafi-tabs__nav-tab" style="white-space: normal;">
+                                                <span class="tabs__tab">Sắp diễn ra</span>
+                                            </div>
+                                            <div class="tafi-tabs__nav-tab" style="white-space: normal;">
+                                                <span class="tabs__tab">Đã kết thúc</span>
+                                            </div>
+                                        </div>
+                                        <div class="tafi-tabs__ink-bar" style="width: 78.25px; transform: translateX(0px);"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @* List panel *@
+                    <div class="list-panel">
+                        <div class="list-all">
+                            <section class="product-list-header product-list-section">
+                                <header class="order-search-container">
+                                    @using (Html.BeginForm("QLVoucherShop", "VoucherShop", FormMethod.Get, new {@style = "-webkit-box-flex: 1; -ms-flex: 1; flex: 1; margin-right: 16px;"}))
+                                    {
+                                        <div class="tafi-input-group search-input-group">
+                                            <span class="tafi-input-group__prepend" style="width: 150px;">Tên voucher</span>
+                                            <span class="tafi-input-group__append">
+                                                <div class="order-search-input">
+                                                    <div class="search-wrapper">
+                                                        <div class="tafi-input order-search-btn">
+                                                            <div class="tafi-input__inner tafi-input__inner--normal">
+                                                                @Html.TextBox("SearchString", ViewBag.CrurentFilter as string, new
+                                                                {
+                                                                        @class = "tafi-input__input",
+                                                                        @type = "text",
+                                                                        @placeholder = "Nhập vào",
+                                                                        @tabindex = "0",
+                                                                        @resize = "none",
+                                                                        @size = "large",
+                                                                        @rows = "2",
+                                                                        @minrows = "2",
+                                                                        @clearable="true",
+                                                                        @maxlength = "Infinity",
+                                                                        @restrictiontype = "input",
+                                                                        @max = "Infinity",
+                                                                        @min = "-Infinity",
+                                                                        @id = "myInput",
+                                                                })
+                                                                @*<input type="text" placeholder="Nhập Tên Voucher" clearable="true"
+                                                                       resize="vertical" rows="2" minrows="2" maxlength="50"
+                                                                       restrictiontype="input" max="Infinity" min="-Infinity" class="tafi-input__input">*@
+                                                                <div class="tafi-input__suffix">
+                                                                    <span class="tafi-input__suffix-split"></span>
+                                                                    <span class="tafi-input__char-count"><i class='bx bx-search'></i></span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </span>
+                                            <div class="actions" style="margin-left: 16px;">
+                                                <button class="tafi-button tafi-button-primary">
+                                                    <span>Tìm kiếm</span>
+                                                </button>
+                                                <button type="reset" class="tafi-button" style="margin-left: 16px;" onclick="resetInputValue()">
+                                                    <span>Nhập lại</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    }
+                                </header>
+                                <header class="product-list-header__create" style="align-items: flex-end;">
+                                    <div class="product-list-header__create-right right">
+                                        <a href="@Url.Action("TaoVoucher", "VoucherShop")" class="tafi-button tafi-button-primary tafi-button--large">
+                                            <i class='bx bx-plus bx-sm'></i>
+                                            <span style="margin-left: 5px;">Thêm mới voucher</span>
+                                        </a>
+                                    </div>
+                                </header>
+                            </section>
+                            <section class="product-list-section product-and-pagination-wrap">
+                                <div class="product-list-container">
+                                    <div class="tafi-table product-list-view">
+                                        <div class="tafi-table__body-container">
+                                            <div class="tafi-table__main-body">
+                                                <div class="tafi-scrollbar">
+                                                    <div class="tafi-scrollbar__wrapper" style="overflow: auto;">
+                                                        @* Table header *@
+                                                        <div class="tafi-table__header-container" style="width: fit-content;">
+                                                            <div class="tafi-table__main-header">
+                                                                <table cellpadding="0" border="0" class="tafi-table__header" style="width: 1538px; min-width: 100%; table-layout: fixed;">
+                                                                    <colgroup>
+                                                                        <col width="170">
+                                                                        <col width="120">
+                                                                        <col width="174">
+                                                                        <col width="120">
+                                                                        <col width="120">
+                                                                        <col width="140">
+                                                                        <col width="220">
+                                                                        <col width="100">
+                                                                    </colgroup>
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th colspan="1" rowspan="1">
+                                                                                <div class="tafi-table__cell">
+                                                                                    <span class="tafi-table__cell-label">
+                                                                                        Tên Voucher
+                                                                                    </span>
+                                                                                </div>
+                                                                            </th>
+                                                                            <th colspan="1" rowspan="1">
+                                                                                <div class="tafi-table__cell">
+                                                                                    <span class="tafi-table__cell-label">
+                                                                                        Giảm giá
+                                                                                    </span>
+                                                                                </div>
+                                                                            </th>
+                                                                            <th colspan="1" rowspan="1">
+                                                                                <div class="tafi-table__cell">
+                                                                                    <span class="tafi-table__cell-label">
+                                                                                        Điều kiện
+                                                                                    </span>
+                                                                                </div>
+                                                                            </th>
+                                                                            <th colspan="1" rowspan="1">
+                                                                                <div class="tafi-table__cell">
+                                                                                    <div class="tafi-table__cell-wrap">
+                                                                                        <span class="tafi-table__cell-label">
+                                                                                            Số lượng sử dụng
+                                                                                        </span>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </th>
+                                                                            <th colspan="1" rowspan="1">
+                                                                                <div class="tafi-table__cell">
+                                                                                    <div class="tafi-table__cell-wrap">
+                                                                                        <span class="tafi-table__cell-label">
+                                                                                            Đã dùng
+                                                                                        </span>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </th>
+                                                                            <th colspan="1" rowspan="1">
+                                                                                <div class="tafi-table__cell">
+                                                                                    <div class="tafi-table__cell-wrap">
+                                                                                        <span class="tafi-table__cell-label">
+                                                                                            Giá trị đơn hàng tối thiểu
+                                                                                        </span>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </th>
+                                                                            <th colspan="1" rowspan="1">
+                                                                                <div class="tafi-table__cell">
+                                                                                    <span class="tafi-table__cell-label">
+                                                                                        Trạng thái | Thời gian lưu Mã giảm giá
+                                                                                    </span>
+                                                                                </div>
+                                                                            </th>
+                                                                            <th colspan="1" rowspan="1">
+                                                                                <div class="tafi-table__cell">
+                                                                                    <span class="tafi-table__cell-label">
+                                                                                        Thao tác
+                                                                                    </span>
+                                                                                </div>
+                                                                            </th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                        @* Table body *@
+                                                        @* ---------- *@
+                                                        @* ------- *@
+
+                                                        @* Have product *@
+                                                        @if (Model.Any())
+                                                        {
+                                                            foreach (var item in Model)
+                                                            {
+                                                                <table cellpadding="0" border="0" class="tafi-table__body" style="width: 1538px; min-width: 100%; table-layout: fixed;">
+                                                                    <colgroup>
+                                                                        <col width="170">
+                                                                        <col width="120">
+                                                                        <col width="174">
+                                                                        <col width="120">
+                                                                        <col width="120">
+                                                                        <col width="140">
+                                                                        <col width="220">
+                                                                        <col width="100">
+                                                                    </colgroup>
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <td colspan="1" rowspan="1">
+                                                                                <div class="tafi-table__cell">
+                                                                                    <div class="product-list-item__td product-main">
+                                                                                        <div class="product-name" style="margin-left: 0;">
+                                                                                            <span class="product-name-text">@Html.DisplayFor(modelItem => item.TENVC)</span>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </td>
+                                                                            <td colspan="1" rowspan="1">
+                                                                                <div class="tafi-table__cell">
+                                                                                    <div class="product-list-item__td product-main">
+                                                                                        <div class="product-cate">
+                                                                                            <span class="product-cate-text">@Html.DisplayFor(modelItem => item.GIAMGIA)</span>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </td>
+                                                                            <td colspan="1" rowspan="1">
+                                                                                <div class="tafi-table__cell">
+                                                                                    <div class="product-list-item__td product-main">
+                                                                                        <div class="product-cate">
+                                                                                            <span class="product-cate-text">@Html.DisplayFor(modelItem => item.DIEUKIEN)</span>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </td>
+                                                                            <td colspan="1" rowspan="1">
+                                                                                <div class="tafi-table__cell">
+                                                                                    <div class="product-list-item__td product-main">
+                                                                                        <div class="product-price">
+                                                                                            <span class="product-cate-text">@Html.DisplayFor(modelItem => item.SOLUONGSD)</span>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </td>
+                                                                            <td colspan="1" rowspan="1">
+                                                                                <div class="tafi-table__cell">
+                                                                                    <div class="product-list-item__td product-main">
+                                                                                        <div class="product-price">
+                                                                                            <span class="product-quantity-text">@Html.DisplayFor(modelItem => item.DADUNG)</span>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </td>
+                                                                            <td colspan="1" rowspan="1">
+                                                                                <div class="tafi-table__cell">
+                                                                                    <div class="product-list-item__td product-main">
+                                                                                        <div class="product-price">
+                                                                                            <span class="product-quantity-text">@Html.DisplayFor(modelItem => item.GIATRITOITHIEU)</span>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </td>
+                                                                            <td colspan="1" rowspan="1">
+                                                                                <div class="tafi-table__cell">
+                                                                                    <div class="product-list-item__td product-main">
+                                                                                        <div class="product-name" style="margin-left: 0;">
+                                                                                            <span class="product-state-tag">@Html.DisplayFor(modelItem => item.TRANGTHAIVC.TENTRANGTHAI)</span>
+                                                                                            <span class="product-name-text-2"><span>@Html.DisplayFor(modelItem => item.NGAYBD)</span> - <span>@Html.DisplayFor(modelItem => item.NGAYKT)</span></span>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </td>
+                                                                            <td colspan="1" rowspan="1">
+                                                                                <div class="tafi-table__cell">
+                                                                                    <div class="product-list-item__td product-main">
+                                                                                        <div class="product-actions">
+                                                                                            <div class="product-actions-text">
+                                                                                                <a href="@Url.Action("CapNhatVoucher", "VoucherShop", new { id = item.IDVOUCHERSHOP})">Cập nhật</a>
+                                                                                                <a href="@Url.Action("Delete", "VoucherShop", new { id = item.IDVOUCHERSHOP})">Xóa</a>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </thead>
+                                                                </table>
+                                                                <div class="tafi-table__horizontal"></div>
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            @* No product *@
+                                                            <div class="tafi-table__empty">
+                                                                <div class="product-no-result">
+                                                                    <span class="sprites-product-list-no-product"></span>
+                                                                    <div class="text"> Không tìm thấy voucher </div>
+                                                                </div>
+                                                            </div>
+                                                        }
+
+                                                        @* ------- *@
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            @* Product list pagination *@
+                                            <div class="product-list-pagination tafi-pagination">
+                                                <div class="" style="width: 200px; display: flex; justify-content: center;">
+                                                    @Html.PagedListPager(Model, page => Url.Action("SanPham", new { page, size = ViewBag.currentSize }))
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var tags = document.querySelectorAll(".product-state-tag");
+
+        for (var i = 0; i < tags.length; i++) {
+            var tag = tags[i];
+            var trangThai = tag.innerText.trim(); // Lấy nội dung của thẻ và loại bỏ khoảng trắng xung quanh
+
+            switch (trangThai) {
+                case "Sắp diễn ra":
+                    tag.classList.add("waiting"); // hoặc class CSS tương ứng
+                    break;
+                case "Đang hoạt động":
+                    tag.classList.add("online"); // hoặc class CSS tương ứng
+                    break;
+                case "Đã kết thúc":
+                    tag.classList.add("error"); // hoặc class CSS tương ứứng
+                    break;
+            }
+        }
+    });
+
+    function resetInputValue() {
+        var inputElement = document.getElementById('myInput');
+        if (inputElement) {
+            inputElement.value = ''; // Reset the input value to an empty string
+        }
+    }
+</script>

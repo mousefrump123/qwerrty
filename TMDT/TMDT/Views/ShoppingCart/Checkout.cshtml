@@ -1,0 +1,370 @@
+﻿@model TMDT.Models.Cart
+
+@using TMDT.Controllers
+@{
+    ViewBag.Title = "Checkout";
+    Layout = "~/Views/Shared/Layout-NgMua.cshtml";
+
+
+}
+
+<div class="app__container" style="height: 100%;">
+    <div class="grid wide">
+        <div class="row sm-gutter app__content">
+            <div class="col l-12 m-12 c-12">
+                <div class="title-page">
+                    Thanh toán
+                </div>
+                @if (ViewBag.ItemsForCuaHang != null)
+                {
+                    double totalCart = 0; // Khởi tạo biến tổng tiền
+                    double shipPrice = 0; // Khởi tạo biến tiền ship
+                    double toalCartAfAll = 0; // Khởi tạo biến tổng thanh toán
+                    <div class="header-show-to-cart">
+                        <div class="header-show-to-cart__product">Sản phẩm</div>
+                        <div class="header-show-to-cart__price">Đơn giá</div>
+                        <div class="header-show-to-cart__quanlity">Số lượng</div>
+                        <div class="header-show-to-cart__cost">Số tiền</div>
+                        <div class="header-show-to-cart__action">Thao tác</div>
+                    </div>
+                    <section class="section-cart" style="margin-bottom: 50px;">
+                        <div class="cart-shop-info-wrapper">
+                            <div class="cart-shop-info">
+                                <a href="#" class="cart-shop-link" id="shopInfo" data-shop-id="@ViewBag.CuaHang.IDCUAHANG">
+                                    <i class='bx bx-store bx-md'></i>
+                                    <img src="@Url.Content(@ViewBag.CuaHang.ANHDAIDIEN)" alt="Alternate Text" />
+                                    <span style="margin-left: 10px; font-size: 1.4rem;">@ViewBag.CuaHang.TENCH</span>
+                                </a>
+                            </div>
+                        </div>
+                        @foreach (var item in ViewBag.ItemsForCuaHang)
+                        {
+
+                            @*<input type="hidden" name="CuaHangId" value="@item.cuahang?.IDCUAHANG" />*@
+                            double total = Convert.ToDouble(item.sanpham.GIAGIAM * item.soluong);
+                            totalCart += total; // Thêm giá trị sản phẩm vào tổng tiền
+                            shipPrice = 26000;
+                            toalCartAfAll = totalCart + shipPrice;
+                            <section class="cart-product-wrapper">
+                                <div class="cart-product">
+                                    <div class="cart-product-info">
+                                        <div class="cart-product-info-wrapper">
+                                            <div class="cart-product-info-inner">
+                                                <a href="#" class="cart-product-info__img">
+                                                    <img src="@Url.Content(item.sanpham.HINHANH1)" alt="Alternate Text" />
+                                                </a>
+                                                <div class="cart-product-info__title">
+                                                    <a href="#" class="cart-product-info__title-link">@item.sanpham.TENSP</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="o7pJBk" style="display: flex; align-items: center; justify-content: center; width: 17.24138%; "></div>
+                                        <div class="cart-product-price">
+                                            <div>
+                                                <span style="margin: 0; font-size: 1.5rem;">@item.sanpham.GIAGIAM.ToString("0,0 đ")</span>
+                                            </div>
+                                        </div>
+                                        <div class="cart-product-quantity">
+                                            @using (Html.BeginForm("Update_Sl", "ShoppingCart", FormMethod.Post, new { @style = "display: flex; align-items: center;  justify-content: center;  flex-direction: column;" }))
+                                            {
+                                                <div class="tafi-input-quantity">
+                                                    <input type="hidden" value="@item.sanpham.IDSANPHAM" name="ID_sanpham" />
+                                                    <p class="button-quantity input-quantity" style="color: black;">@item.soluong</p>
+                                                </div>
+                                            }
+                                            @if (item.ErrorMessage != null)
+                                            {
+                                                <p style="color:red;" id="thongbao">@item.ErrorMessage</p>
+
+                                            }
+                                        </div>
+                                        <div class="cart-product-cost">
+                                            <span>@total.ToString("0,0 đ")</span>
+                                        </div>
+                                        <div class="cart-product-action">
+                                            <a href="/ShoppingCart/RemoveCart/@item.sanpham.IDSANPHAM">Xóa</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                        }
+                        <div class="cart-product-purchase">
+                            <div class="cart-product-purchase-wrapper">
+                                <div style="display: flex; flex-direction: column; width: 340px;">
+                                    <div>
+                                        <div class="checkout-voucher-shop">
+                                            <div class="checkout-voucher-shop__title">Voucher shop</div>
+                                            <a class="dialog-btn" href="#my-dialog">Chọn voucher</a>
+
+                                            <div class="dialog overlay" id="my-dialog">
+                                                <a href="#" class="overlay-close"></a>
+
+                                                <div class="dialog-body">
+                                                    <a class="dialog-close-btn" href="#">&times;</a>
+                                                    <h3>Chọn Voucher shop</h3>
+                                                    <div class="voucher-wrapper scroll-bar-voucher-shop">
+                                                        @if (ViewBag.VoucherShop != null)
+                                                            {
+                                                                foreach (var voucher in ViewBag.VoucherShop)
+                                                                {
+                                                                    using (Html.BeginForm("AddVoucher", "ShoppingCart", FormMethod.Post))
+                                                                    {
+                                                                        <div class="voucher-shop-card" style="box-shadow: 0 4px 6px 0 rgba(0,0,0,.12);">
+                                                                            <div class="voucher-shop-card__left" style="display: flex; border-right: unset; background-color: transparent;">
+                                                                                <div class="shop-voucher">
+                                                                                    <img src="@Url.Content(voucher.CUAHANG.ANHDAIDIEN)" />
+                                                                                    <p>@voucher.CUAHANG.TENCH</p>
+                                                                                </div>
+                                                                                <div style="width: 290px; height: 118px;">
+                                                                                    <div class="voucher-shop-card__left-title" style="margin: 10px 0; font-size: 1.5rem;">Giảm <span>@String.Format("{0:#,##0}đ", voucher.GIAMGIA)</span></div>
+                                                                                    <div class="voucher-shop-card__left-condition" style="margin: 10px 0; font-size: 1.4rem;">Đơn tối thiểu <span>@String.Format("{0:#,##0}đ", voucher.GIATRITOITHIEU)</span></div>
+                                                                                    <div class="voucher-shop-card__left-condition" style="margin: 1.px 0; font-size: 1.4rem;">Trạng thái: <span>@voucher.TRANGTHAIVC.TENTRANGTHAI</span></div>
+                                                                                    <div class="voucher-shop-card__left-expiry" style="margin-top: 15px; font-size: 1.4rem;">HSD: <span>@String.Format("{0:dd/MM/yyyy}", voucher.NGAYKT)</span></div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="voucher-shop-card__right" style="background-color: transparent;">
+                                                                                @*<button type="submit" class="voucher-shop-card__right-save" style="font-size: 1.3rem;">Dùng ngay</button>*@
+                                                                                <input type="hidden" name="id" value="@voucher.IDVOUCHERSHOP" />
+                                                                                <button class="tafi-button tafi-button-primary" type="submit">Chọn</button>
+                                                                            </div>
+                                                                        </div>
+                                                                    }
+                                                            }
+                                                        }
+                                                    </div>
+
+                                                    <div class="dialog-form-footer">
+                                                        <a href="#" class="tafi-button tafi-button-primary button-ok" style=" background-color: rgb(250 68 121); color: #fff;">OK</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="detail-bill">
+                                            <div class="detail-bill-wrapper">
+                                                <h2 class="total-bill-title">Tên voucher</h2>
+                                                <div class="total-bill-price" id="voucherNameDisplay">@ViewBag.TenVoucher</div>
+                                            </div>
+                                            <div class="detail-bill-wrapper">
+                                                <h2 class="total-bill-title">Tổng tiền hàng</h2>
+                                                <div class="total-bill-price">@totalCart.ToString("0,0đ")</div>
+                                            </div>
+                                            <div class="detail-bill-wrapper">
+                                                <h2 class="total-bill-title">Phí vận chuyển</h2>
+                                                <div class="total-bill-price">@shipPrice.ToString("0,0đ")</div>
+                                            </div>
+                                            <div class="detail-bill-wrapper">
+                                                <h2 class="total-bill-title">Giảm giá</h2>
+                                                <div class="total-bill-price" id="discountPrice">@ViewBag.GiamGia</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="cart-product-purchase__total" style="flex-direction: column;">
+                                        <div style="display: flex; justify-content: space-between;">
+                                            <div class="cart-product-purchase__total-title">Tổng thanh toán</div>
+                                            @if (ViewBag.GiamGia != null)
+                                            {
+                                                // Lấy giá trị chuỗi từ ViewBag.GiamGia
+                                                string giamGiaString = ViewBag.GiamGia as string;
+
+                                                // Loại bỏ ký tự không phải số và chuyển đổi sang kiểu số
+                                                double giamGiaValue;
+                                                if (double.TryParse(giamGiaString.Replace("đ", "").Replace(",", "").Trim(), out giamGiaValue))
+                                                {
+                                                    // Thực hiện phép trừ
+                                                    double toalCartAfDisCount = toalCartAfAll - giamGiaValue;
+                                                    <div class="cart-product-purchase__total-price" id="totalCartAfAll">@toalCartAfDisCount.ToString("0,0 đ")</div>
+                                                }
+                                                else
+                                                {
+                                                    // Xử lý khi không thể chuyển đổi chuỗi thành số
+                                                    <div class="cart-product-purchase__total-price" id="totalCartAfAll">Error</div>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <div class="cart-product-purchase__total-price" id="totalCartAfAll">@toalCartAfAll.ToString("0,0 đ")</div>
+
+                                            }
+                                        </div>
+                                        @using (Html.BeginForm("Checkout", "ShoppingCart", FormMethod.Post, new { @style = "display: flex; justify-content: flex-end; margin-top: 10px;" }))
+                                        {
+                                            <label for="button-show" class="cart-product-purchase__total-checkout">Mua hàng</label>
+                                            <input type="checkbox" class="button-show-check-out" id="button-show">
+                                            <label for="button-show" class="overlay2"></label>
+                                            <div class="checkout">
+                                                <label for="button-show" class="checkout-close">
+                                                    <i class="fas fa-times"></i>
+                                                </label>
+                                                <div class="checkout-main">
+                                                    <div class="checkout-main__header">
+                                                        <a href="#" class="logo" style="color: #000;">
+                                                            <h1 class="logo-text">TFT SHOP</h1>
+                                                        </a>
+                                                    </div>
+                                                    <div class="checkout-main-content">
+                                                        <h3 class="checkout-main-label" style="margin-bottom: 20px;">Thông tin giao hàng</h3>
+
+                                                        <div class="fieldset">
+                                                            <div class="field">
+                                                                <input type="text" class="field-input" name="Hovaten" id="" placeholder="Họ và tên" required>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="fieldset">
+                                                            <div class="field">
+                                                                <input type="text" class="field-input" name="SDT" id="" placeholder="Số điện thoại" required>
+                                                            </div>
+                                                        </div>
+                                                        <div class="fieldset">
+                                                            <div class="field">
+                                                                <input type="text" class="field-input" name="Diachi" id="" placeholder="Địa chỉ" required>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="fieldset">
+                                                            <div class="field">
+                                                                <p class="checkout-method"> Phương thức thanh toán</p>
+                                                            </div>
+                                                        </div>
+
+                                                        <a for="button-show_checkout" href="">
+                                                            <input type="hidden" name="ShopId" value="@ViewBag.CuaHang.IDCUAHANG" />
+                                                            <button style="width:452px">
+                                                                <strong>MUA NGAY</strong>
+                                                                <br />
+                                                                <span style="font-size:18px">(Giao nhanh từ 2 giờ hoặc nhận tại cửa hàng)</span>
+
+                                                            </button>
+                                                        </a>
+
+
+                                                        <br />
+                                                        <h3 style="text-align:center"> Hoặc </h3>
+
+                                                        <a for="button-show_checkout" href="">
+                                                            <button style="width:452px" formaction="@Url.Action("Payment","Payment")">
+                                                                <input type="hidden" name="ShopId" value="@ViewBag.CuaHang.IDCUAHANG" />
+                                                                <strong>THANH TOÁN QUA THẺ</strong>
+                                                                <br />
+                                                                <span style="font-size:18px">(Thẻ VNPAY)</span>
+
+                                                            </button>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    //using (Html.BeginForm("Checkout", "ShoppingCart", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    //{
+
+
+
+                    //}
+
+                }
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    // Lấy tất cả các phần tử có class "button-quantity input-quantity"
+    var quantityInputs = document.querySelectorAll(".button-quantity.input-quantity");
+
+    // Lặp qua từng ô input và gán sự kiện cho nút "tăng" và "giảm" tương ứng
+    quantityInputs.forEach(function (input) {
+        var decreaseButton = input.parentElement.querySelector(".decrease");
+        var increaseButton = input.parentElement.querySelector(".increase");
+
+        decreaseButton.addEventListener("click", function () {
+            // Giảm giá trị khi bấm nút "-"
+            var currentValue = parseInt(input.value);
+            if (!isNaN(currentValue) && currentValue > 0) {
+                input.value = currentValue - 1;
+            }
+        });
+
+        increaseButton.addEventListener("click", function () {
+            // Tăng giá trị khi bấm nút "+"
+            var currentValue = parseInt(input.value);
+            if (!isNaN(currentValue)) {
+                input.value = currentValue + 1;
+            }
+        });
+    });
+</script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    //$(document).ready(function () {
+    //    var totalDiscounted = 0;
+    //    var isVoucherApplied = false;
+    //    var selectedVoucherId = null;
+
+    //    $('#CheckoutButton').click(function () {
+    //        var totalCartAfAll = parseFloat($('#totalCartAfAll').data('initial-value').replace(/\D/g, ''));
+    //        if (isVoucherApplied && totalDiscounted > 0 && selectedVoucherId !== null && selectedVoucherId !== undefined) {
+    //            $.ajax({
+    //                type: 'POST',
+    //                url: '/ShoppingCart/Checkout',
+    //                data: {
+    //                    voucherId: selectedVoucherId,
+    //                    totalCartAfAll: totalCartAfAll,
+    //                    ShopId: $('#shopInfo').data('shop-id'),
+    //                    totalDiscounted: totalDiscounted
+    //                },
+    //                success: function (data) {
+    //                    // Xử lý dữ liệu trả về sau khi thanh toán
+    //                },
+    //                error: function () {
+    //                    console.log('Đã có lỗi xảy ra trong quá trình thanh toán.');
+    //                }
+    //            });
+    //        } else {
+    //            console.log('Vui lòng chọn voucher trước khi thanh toán hoặc dữ liệu không hợp lệ.');
+    //        }
+    //    });
+
+    //    $('input[name="voucherShopSelection"]').change(function () {
+    //        selectedVoucherId = $(this).val();
+    //        var totalCartAfAll = parseFloat($('#totalCartAfAll').data('initial-value').replace(/\D/g, ''));
+
+    //        $.ajax({
+    //            type: 'POST',
+    //            url: '/ShoppingCart/ProcessVoucher',
+    //            data: {
+    //                voucherId: selectedVoucherId,
+    //                totalCartAfAll: totalCartAfAll
+    //            },
+    //            success: function (data) {
+    //                if (data.success) {
+    //                    $('#voucherNameDisplay').text(data.voucherName);
+    //                    $('#discountPrice').text(data.voucherDiscount);
+    //                    $('#totalCartAfAll').text(data.totalDiscountedPrice);
+    //                    totalDiscounted = data.totalDiscounted;
+    //                    isVoucherApplied = true;
+    //                } else {
+    //                    console.log('Không tìm thấy voucher.');
+    //                }
+    //            },
+    //            error: function () {
+    //                console.log('Đã có lỗi xảy ra trong quá trình xử lý voucher.');
+    //            }
+    //        });
+    //    });
+
+    //});
+
+
+
+</script>
+

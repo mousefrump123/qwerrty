@@ -1,0 +1,722 @@
+﻿@model TMDT.Models.ViewModelSanPham
+@{
+    ViewBag.Title = "PheDuyet";
+    Layout = "~/Areas/Admin/Views/Shared/Layout_Admin.cshtml";
+}
+<style>
+    .detail-info__name {
+        color: orange;
+        font-weight: 600;
+    }
+</style>
+<div class="col l-9-1 m-12 c-12">
+    <div class="home-product">
+        <div class="row sm-gutter" style="padding-right: 16px;">
+            <div class="product-edit">
+                <div class="product-edit__container">
+                    <div class="title-page">
+                        <div class="title-page__link">
+                            <a href="@Url.Action("DashBoard", "DashBoard")" class="title-page__link-label">Trang chủ</a>
+                            <i class='bx bx-chevron-right'></i>
+                            <a href="@Url.Action("QLSanPham", "QLSanPham")" class="title-page__link-label">Xử lý Sản phẩm</a>
+                            <i class='bx bx-chevron-right'></i>
+                            <a href="@Url.Action("PheDuyet", "QLSanPham")" class="title-page__link-label">Phê duyệt sản phẩm</a>
+                        </div>
+                    </div>
+                    @using (Html.BeginForm("PheDuyet", "QlSanPham", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <div class="product-edit__main">
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            @Html.Hidden("SANPHAM.IDSANPHAM", Model.SANPHAM.IDSANPHAM)
+                            @Html.Hidden("SANPHAM.HINHANH1", Model.SANPHAM.HINHANH1)
+                            @Html.Hidden("SANPHAM.HINHANH2", Model.SANPHAM.HINHANH2)
+                            @Html.Hidden("SANPHAM.HINHANH3", Model.SANPHAM.HINHANH3)
+                            <section class="product-edit__section" id="section-basic-info">
+                                <div class="product-detail-panel product-basic-info">
+                                    <div class="panel-header">
+                                        <div class="panel-title">
+                                            <div class="basic-info-title">Thông tin cơ bản</div>
+                                        </div>
+                                    </div>
+                                    <div class="panel-content-wrapper">
+                                        <div class="panel-content">
+                                            <div class="edit-row">
+                                                <div class="edit-label edit-title">
+                                                    <span><span style="color: red;">*</span> Trạng thái sản phẩm</span>
+                                                </div>
+                                                <div class="edit-main">
+                                                    <div class="popover-wrap">
+                                                        <div class="custom-len-calc-input product-edit-form-item">
+                                                            <div class="product-edit-form-item-content">
+                                                                <div class="tafi-input">
+                                                                    <div class="tafi-input__inner tafi-input__inner--large">
+                                                                        @{ Html.RenderAction("ChonPheDuyet", "QLSanPham");}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            @* Hình ảnh *@
+                                            <div class="edit-row">
+                                                <div class="edit-label edit-title">
+                                                    <span><span style="color: red;">*</span> Hình ảnh sản phẩm</span>
+                                                </div>
+                                                <div class="edit-main image-offset" style="height: 135px; max-height: 135px;">
+                                                    <div style="line-height: 40px;">
+                                                        <div class="edit-label edit-title">
+                                                            <span><span style="color: red;">*</span> Hình ảnh tỷ lệ 1:1</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="edit-main tafi-image-manager" style="padding: 0 25px;">
+                                                        <div class="container" style="flex-direction: row; justify-content: flex-start;">
+                                                            <div class="wrapper-img" style="display: flex; flex-direction: column-reverse;">
+                                                                <div class="preview-container">
+                                                                    @* Import Images of Products *@
+                                                                    <img src="@Url.Content(Model.SANPHAM.HINHANH1)" alt="Alternate Text" id="previewImg1" class="preview-image-product" />
+                                                                </div>
+
+                                                            </div>
+                                                            <div class="wrapper-img" style="display: flex; flex-direction: column-reverse;">
+                                                                <div class="preview-container">
+                                                                    @* Import Images of Products *@
+                                                                    <img src="@Url.Content(Model.SANPHAM.HINHANH2)" alt="Alternate Text" id="previewImg2" class="preview-image-product" />
+                                                                </div>
+
+                                                            </div>
+                                                            <div class="wrapper-img" style="display: flex; flex-direction: column-reverse;">
+                                                                <div class="preview-container">
+                                                                    @* Import Images of Products *@
+                                                                    <img src="@Url.Content(Model.SANPHAM.HINHANH3)" alt="Alternate Text" id="previewImg3" class="preview-image-product" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            @* Tên Sản phẩm *@
+                                            <div class="edit-row">
+                                                <div class="edit-label edit-title">
+                                                    <span><span style="color: red;">*</span> Tên sản phẩm</span>
+                                                </div>
+                                                <div class="edit-main">
+                                                    <div class="popover-wrap">
+                                                        <div class="custom-len-calc-input product-edit-form-item">
+                                                            <div class="product-edit-form-item-content">
+                                                                <div class="tafi-input detail-info-input" style="height: 40px;">
+                                                                    <span class="detail-info__name">@Model.SANPHAM.TENSP</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            @* Tên Ngành Hàng *@
+                                            <div class="edit-row">
+                                                <div class="edit-label edit-title">
+                                                    <span><span style="color: red;">*</span> Tên ngành hàng</span>
+                                                </div>
+                                                <div class="edit-main">
+                                                    <div class="popover-wrap">
+                                                        <div class="custom-len-calc-input product-edit-form-item">
+                                                            <div class="product-edit-form-item-content">
+                                                                <div class="tafi-input detail-info-input" style="height: 40px;">
+                                                                    <span class="detail-info__name">@(Model.SANPHAM.LOAISP==null?"":Model.SANPHAM.LOAISP.TENLOAISP)</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="edit-row">
+                                                <div class="edit-label edit-title">
+                                                    <span><span style="color: red;">*</span> Màu sắc</span>
+                                                </div>
+                                                <div class="edit-main">
+                                                    <div class="popover-wrap">
+                                                        <div class="custom-len-calc-input product-edit-form-item">
+                                                            <div class="product-edit-form-item-content">
+                                                                <div class="tafi-input detail-info-input" style="height: 40px;">
+                                                                    @if (Model.SANPHAM != null && Model.SANPHAM.MAUSAC != null)
+                                                                    {
+                                                                        <span class="detail-info__name">@Model.SANPHAM.MAUSAC.MAUSAC1</span>
+                                                                    }
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            @* Mô tả sản phẩm *@
+                                            <div class="edit-row">
+                                                <div class="edit-label edit-title">
+                                                    <span><span style="color: red;">*</span> Mô tả sản phẩm</span>
+                                                </div>
+                                                <div class="edit-main">
+                                                    <div class="product--description">
+                                                        <span class="async-component">
+                                                            <div class="product-description-editor ls-upload-cmpt-container">
+                                                                <div class="popover-wrap">
+                                                                    <div class="custom-len-calc-input product-edit-form-item">
+                                                                        <div class="product-edit-form-item-content">
+                                                                            <div class="tafi-input tafi-input__area">
+                                                                                <div class="tafi-input detail-info-input" style="height: 40px;">
+                                                                                    <span class="detail-info__name">@Model.SANPHAM.MOTASANPHAM</span>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                            @* Chi tiết điện thoại *@
+                            @if (Model.SANPHAM.IDLOAISP == 1)
+                            {
+                                <section class="product-edit__section">
+                                    <div class="product-detail-panel product-specification-new">
+                                        <div class="panel-header">
+                                            <div class="panel-title"> Thông tin chi tiết </div>
+                                        </div>
+                                        <div class="panel-content-wrapper">
+                                            <div class="panel-content">
+                                                <div class="attribute-select-container-new">
+                                                    <div class="attribute-select-list">
+                                                        <div class="attribute-select-list-column">
+                                                            <div class="attribute-select-item">
+                                                                <div class="edit-row">
+                                                                    <div class="edit-label edit-title">
+                                                                        <span><span style="color: red;">*</span> Thương hiệu</span>
+                                                                    </div>
+                                                                    <div class="degrade-wrap edit-row-right-medium">
+                                                                        <div class="custom-len-calc-input product-edit-form-item">
+                                                                            <div class="product-edit-form-item-content">
+                                                                                <div class="popover-wrap">
+                                                                                    <div class="tafi-input price-input product-edit-input">
+                                                                                        <div class="tafi-input detail-info-input" style="height: 40px;">
+                                                                                            @if (Model.CTDIENTHOAI != null && Model.CTDIENTHOAI.THDIENTHOAI != null)
+                                                                                            {
+                                                                                                <span class="detail-info__name">@Model.CTDIENTHOAI.THDIENTHOAI.THUONGHIEUDT</span>
+                                                                                            }
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="attribute-select-item">
+                                                                <div class="edit-row">
+                                                                    <div class="edit-label edit-title">
+                                                                        <span><span style="color: red;">*</span> Màn hình </span>
+                                                                    </div>
+                                                                    <div class="degrade-wrap edit-row-right-medium">
+                                                                        <div class="custom-len-calc-input product-edit-form-item">
+                                                                            <div class="product-edit-form-item-content">
+                                                                                <div class="popover-wrap">
+                                                                                    <div class="tafi-input price-input product-edit-input">
+                                                                                        <div class="tafi-input detail-info-input" style="height: 40px;">
+                                                                                            @if (Model.CTDIENTHOAI != null && Model.CTDIENTHOAI.MANHINH != null)
+                                                                                            {
+                                                                                                <span class="detail-info__name">@Model.CTDIENTHOAI.MANHINH</span>
+                                                                                            }
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="attribute-select-item">
+                                                                <div class="edit-row">
+                                                                    <div class="edit-label edit-title">
+                                                                        <span><span style="color: red;">*</span> Độ phân giải </span>
+                                                                    </div>
+                                                                    <div class="degrade-wrap edit-row-right-medium">
+                                                                        <div class="custom-len-calc-input product-edit-form-item">
+                                                                            <div class="product-edit-form-item-content">
+                                                                                <div class="popover-wrap">
+                                                                                    <div class="tafi-input price-input product-edit-input">
+                                                                                        <div class="tafi-input detail-info-input" style="height: 40px;">
+                                                                                            @if (Model.CTDIENTHOAI != null && Model.CTDIENTHOAI.DOPHANGIAI != null)
+                                                                                            {
+                                                                                                <span class="detail-info__name">@Model.CTDIENTHOAI.DOPHANGIAI</span>
+                                                                                            }
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="attribute-select-item">
+                                                                <div class="edit-row">
+                                                                    <div class="edit-label edit-title">
+                                                                        <span><span style="color: red;">*</span> Camera </span>
+                                                                    </div>
+                                                                    <div class="degrade-wrap edit-row-right-medium">
+                                                                        <div class="custom-len-calc-input product-edit-form-item">
+                                                                            <div class="product-edit-form-item-content">
+                                                                                <div class="popover-wrap">
+                                                                                    <div class="tafi-input price-input product-edit-input">
+                                                                                        <div class="tafi-input detail-info-input" style="height: 40px;">
+                                                                                            @if (Model.CTDIENTHOAI != null && Model.CTDIENTHOAI.CAMERA != null)
+                                                                                            {
+                                                                                                <span class="detail-info__name">@Model.CTDIENTHOAI.CAMERA</span>
+                                                                                            }
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="attribute-select-item">
+                                                                <div class="edit-row">
+                                                                    <div class="edit-label edit-title">
+                                                                        <span><span style="color: red;">*</span> Hệ điều hành </span>
+                                                                    </div>
+                                                                    <div class="degrade-wrap edit-row-right-medium">
+                                                                        <div class="custom-len-calc-input product-edit-form-item">
+                                                                            <div class="product-edit-form-item-content">
+                                                                                <div class="popover-wrap">
+                                                                                    <div class="tafi-input price-input product-edit-input">
+                                                                                        <div class="tafi-input detail-info-input" style="height: 40px;">
+                                                                                            @if (Model.CTDIENTHOAI != null && Model.CTDIENTHOAI.HEDH != null)
+                                                                                            {
+                                                                                                <span class="detail-info__name">@Model.CTDIENTHOAI.HEDH</span>
+                                                                                            }
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="attribute-select-item">
+                                                                <div class="edit-row">
+                                                                    <div class="edit-label edit-title">
+                                                                        <span><span style="color: red;">*</span> Chip xử lý </span>
+                                                                    </div>
+                                                                    <div class="degrade-wrap edit-row-right-medium">
+                                                                        <div class="custom-len-calc-input product-edit-form-item">
+                                                                            <div class="product-edit-form-item-content">
+                                                                                <div class="popover-wrap">
+                                                                                    <div class="tafi-input price-input product-edit-input">
+                                                                                        <div class="tafi-input detail-info-input" style="height: 40px;">
+                                                                                            @if (Model.CTDIENTHOAI != null && Model.CTDIENTHOAI.CHIPXULY != null)
+                                                                                            {
+                                                                                                <span class="detail-info__name">@Model.CTDIENTHOAI.CHIPXULY</span>
+                                                                                            }
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="attribute-select-list-column">
+                                                            <div class="attribute-select-item">
+                                                                <div class="edit-row">
+                                                                    <div class="edit-label edit-title">
+                                                                        <span><span style="color: red;">*</span> ROM </span>
+                                                                    </div>
+                                                                    <div class="degrade-wrap edit-row-right-medium">
+                                                                        <div class="custom-len-calc-input product-edit-form-item">
+                                                                            <div class="product-edit-form-item-content">
+                                                                                <div class="popover-wrap">
+                                                                                    <div class="tafi-input price-input product-edit-input">
+                                                                                        <div class="tafi-input detail-info-input" style="height: 40px;">
+                                                                                            @if (Model.CTDIENTHOAI != null && Model.CTDIENTHOAI.ROM != null)
+                                                                                            {
+                                                                                                <span class="detail-info__name">@Model.CTDIENTHOAI.ROM</span>
+                                                                                            }
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="attribute-select-item">
+                                                                <div class="edit-row">
+                                                                    <div class="edit-label edit-title">
+                                                                        <span><span style="color: red;">*</span> RAM </span>
+                                                                    </div>
+                                                                    <div class="degrade-wrap edit-row-right-medium">
+                                                                        <div class="custom-len-calc-input product-edit-form-item">
+                                                                            <div class="product-edit-form-item-content">
+                                                                                <div class="popover-wrap">
+                                                                                    <div class="tafi-input price-input product-edit-input">
+                                                                                        <div class="tafi-input detail-info-input" style="height: 40px;">
+                                                                                            @if (Model.CTDIENTHOAI != null && Model.CTDIENTHOAI.RAM != null)
+                                                                                            {
+                                                                                                <span class="detail-info__name">@Model.CTDIENTHOAI.RAM</span>
+                                                                                            }
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="attribute-select-item">
+                                                                <div class="edit-row">
+                                                                    <div class="edit-label edit-title">
+                                                                        <span><span style="color: red;">*</span> Mạng di động </span>
+                                                                    </div>
+                                                                    <div class="degrade-wrap edit-row-right-medium">
+                                                                        <div class="custom-len-calc-input product-edit-form-item">
+                                                                            <div class="product-edit-form-item-content">
+                                                                                <div class="popover-wrap">
+                                                                                    <div class="tafi-input price-input product-edit-input">
+                                                                                        <div class="tafi-input detail-info-input" style="height: 40px;">
+                                                                                            @if (Model.CTDIENTHOAI != null && Model.CTDIENTHOAI.MANGDIDONG != null)
+                                                                                            {
+                                                                                                <span class="detail-info__name">@Model.CTDIENTHOAI.MANGDIDONG</span>
+                                                                                            }
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="attribute-select-item">
+                                                                <div class="edit-row">
+                                                                    <div class="edit-label edit-title">
+                                                                        <span><span style="color: red;">*</span> Số khe sim </span>
+                                                                    </div>
+                                                                    <div class="degrade-wrap edit-row-right-medium">
+                                                                        <div class="custom-len-calc-input product-edit-form-item">
+                                                                            <div class="product-edit-form-item-content">
+                                                                                <div class="popover-wrap">
+                                                                                    <div class="tafi-input price-input product-edit-input">
+                                                                                        <div class="tafi-input detail-info-input" style="height: 40px;">
+                                                                                            @if (Model.CTDIENTHOAI != null && Model.CTDIENTHOAI.SOKHESIM != null)
+                                                                                            {
+                                                                                                <span class="detail-info__name">@Model.CTDIENTHOAI.SOKHESIM</span>
+                                                                                            }
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="attribute-select-item">
+                                                                <div class="edit-row">
+                                                                    <div class="edit-label edit-title">
+                                                                        <span><span style="color: red;">*</span> Dung lượng pin </span>
+                                                                    </div>
+                                                                    <div class="degrade-wrap edit-row-right-medium">
+                                                                        <div class="custom-len-calc-input product-edit-form-item">
+                                                                            <div class="product-edit-form-item-content">
+                                                                                <div class="popover-wrap">
+                                                                                    <div class="tafi-input price-input product-edit-input">
+                                                                                        <div class="tafi-input detail-info-input" style="height: 40px;">
+                                                                                            @if (Model.CTDIENTHOAI != null && Model.CTDIENTHOAI.PIN != null)
+                                                                                            {
+                                                                                                <span class="detail-info__name">@Model.CTDIENTHOAI.PIN</span>
+                                                                                            }
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </section>
+                            }
+
+                            @* Chi tiết thời trang *@
+                            @if (Model.SANPHAM.IDLOAISP == 2)
+                            {
+                                <section class="product-edit__section">
+                                    <div class="product-detail-panel product-specification-new">
+                                        <div class="panel-header">
+                                            <div class="panel-title"> Thông tin chi tiết </div>
+                                        </div>
+                                        <div class="panel-content-wrapper">
+                                            <div class="panel-content">
+                                                <div class="attribute-select-container-new">
+                                                    <div class="attribute-select-list">
+                                                        <div class="attribute-select-list-column">
+                                                            <div class="attribute-select-item">
+                                                                <div class="edit-row">
+                                                                    <div class="edit-label edit-title">
+                                                                        <span><span style="color: red;">*</span> Thương hiệu</span>
+                                                                    </div>
+                                                                    <div class="degrade-wrap edit-row-right-medium">
+                                                                        <div class="custom-len-calc-input product-edit-form-item">
+                                                                            <div class="product-edit-form-item-content">
+                                                                                <div class="popover-wrap">
+                                                                                    <div class="tafi-input price-input product-edit-input">
+                                                                                        <div class="tafi-input detail-info-input" style="height: 40px;">
+                                                                                            @if (Model.CTTHOITRANG != null && Model.CTTHOITRANG.THTHOITRANG != null)
+                                                                                            {
+                                                                                                <span class="detail-info__name">@Model.CTTHOITRANG.THTHOITRANG.THUONGHIEUTT</span>
+                                                                                            }
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="attribute-select-item">
+                                                                <div class="edit-row">
+                                                                    <div class="edit-label edit-title">
+                                                                        <span><span style="color: red;">*</span> Chất liệu </span>
+                                                                    </div>
+                                                                    <div class="degrade-wrap edit-row-right-medium">
+                                                                        <div class="custom-len-calc-input product-edit-form-item">
+                                                                            <div class="product-edit-form-item-content">
+                                                                                <div class="popover-wrap">
+                                                                                    <div class="tafi-input price-input product-edit-input">
+                                                                                        <div class="tafi-input detail-info-input" style="height: 40px;">
+                                                                                            @if (Model.CTTHOITRANG != null && Model.CTTHOITRANG.CHATLIEU != null)
+                                                                                            {
+                                                                                                <span class="detail-info__name">@Model.CTTHOITRANG.CHATLIEU</span>
+                                                                                            }
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="attribute-select-item">
+                                                                <div class="edit-row">
+                                                                    <div class="edit-label edit-title">
+                                                                        <span><span style="color: red;">*</span> Size </span>
+                                                                    </div>
+                                                                    <div class="degrade-wrap edit-row-right-medium">
+                                                                        <div class="custom-len-calc-input product-edit-form-item">
+                                                                            <div class="product-edit-form-item-content">
+                                                                                <div class="popover-wrap">
+                                                                                    <div class="tafi-input price-input product-edit-input">
+                                                                                        <div class="tafi-input detail-info-input" style="height: 40px;">
+                                                                                            @if (Model.CTTHOITRANG != null && Model.CTTHOITRANG.SIZETHOITRANG != null)
+                                                                                            {
+                                                                                                <span class="detail-info__name">@Model.CTTHOITRANG.SIZETHOITRANG.SIZETT</span>
+                                                                                            }
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </section>
+                            }
+
+                            @* Chi tiết giày *@
+                            @if (Model.SANPHAM.IDLOAISP == 3)
+                            {
+                                <section class="product-edit__section">
+                                    <div class="product-detail-panel product-specification-new">
+                                        <div class="panel-header">
+                                            <div class="panel-title"> Thông tin chi tiết </div>
+                                        </div>
+                                        <div class="panel-content-wrapper">
+                                            <div class="panel-content">
+                                                <div class="attribute-select-container-new">
+                                                    <div class="attribute-select-list">
+                                                        <div class="attribute-select-list-column">
+                                                            <div class="attribute-select-item">
+                                                                <div class="edit-row">
+                                                                    <div class="edit-label edit-title">
+                                                                        <span><span style="color: red;">*</span> Thương hiệu</span>
+                                                                    </div>
+                                                                    <div class="degrade-wrap edit-row-right-medium">
+                                                                        <div class="custom-len-calc-input product-edit-form-item">
+                                                                            <div class="product-edit-form-item-content">
+                                                                                <div class="popover-wrap">
+                                                                                    <div class="tafi-input price-input product-edit-input">
+                                                                                        <div class="tafi-input detail-info-input" style="height: 40px;">
+                                                                                            @if (Model.CTGIAY != null && Model.CTGIAY.THGIAY != null)
+                                                                                            {
+                                                                                                <span class="detail-info__name">@Model.CTGIAY.THGIAY.THUONGHIEUG</span>
+                                                                                            }
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="attribute-select-item">
+                                                                <div class="edit-row">
+                                                                    <div class="edit-label edit-title">
+                                                                        <span><span style="color: red;">*</span> Size giày </span>
+                                                                    </div>
+                                                                    <div class="degrade-wrap edit-row-right-medium">
+                                                                        <div class="custom-len-calc-input product-edit-form-item">
+                                                                            <div class="product-edit-form-item-content">
+                                                                                <div class="popover-wrap">
+                                                                                    <div class="tafi-input price-input product-edit-input">
+                                                                                        <div class="tafi-input detail-info-input" style="height: 40px;">
+                                                                                            @if (Model.CTGIAY != null && Model.CTGIAY.SIZEGIAY != null)
+                                                                                            {
+                                                                                                <span class="detail-info__name">@Model.CTGIAY.SIZEGIAY.SIZEG</span>
+                                                                                            }
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </section>
+                            }
+
+                            <section class="product-edit__section">
+                                <div class="product-detail-panel product-sales-info inactive">
+                                    <div class="panel-header">
+                                        <div class="panel-title inactive" id="panel-title"> Thông tin bán hàng </div>
+                                    </div>
+                                    <div class="panel-content-wrapper" id="panel-content-price">
+                                        @*<div class="panel-inactive-content"> Có thể điều chỉnh sau khi chọn ngành hàng </div>*@
+                                        @* Thêm thông tin bán hàng bằng js *@
+                                        <div class="panel-content">
+                                            <div class="edit-row">
+                                                <div class="edit-row-left edit-label">
+                                                    <span><span style="color: red;">*</span> Giá</span>
+                                                </div>
+                                                <div class="degrade-wrap edit-row-right-medium">
+                                                    <div class="custom-len-calc-input product-edit-form-item">
+                                                        <div class="product-edit-form-item-content">
+                                                            <div class="popover-wrap">
+                                                                <div class="tafi-input price-input product-edit-input">
+                                                                    <div class="tafi-input detail-info-input" style="height: 40px;">
+                                                                        <span class="detail-info__name">@string.Format("{0:N0} đ", Model.SANPHAM.GIABAN)</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="edit-row">
+                                                <div class="edit-row-left edit-label">
+                                                    <span><span style="color: red;">*</span> Phần trăm giảm</span>
+                                                </div>
+                                                <div class="degrade-wrap edit-row-right-medium">
+                                                    <div class="custom-len-calc-input product-edit-form-item">
+                                                        <div class="product-edit-form-item-content">
+                                                            <div class="popover-wrap">
+                                                                <div class="tafi-input price-input product-edit-input">
+                                                                    <div class="tafi-input detail-info-input" style="height: 40px;">
+                                                                        <span class="detail-info__name">@Model.SANPHAM.PHANTRAMGIAM %</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="edit-row">
+                                                <div class="edit-row-left edit-label">
+                                                    <span><span style="color: red;">*</span> Số lượng tồn</span>
+                                                </div>
+                                                <div class="degrade-wrap edit-row-right-medium">
+                                                    <div class="custom-len-calc-input product-edit-form-item">
+                                                        <div class="product-edit-form-item-content">
+                                                            <div class="popover-wrap">
+                                                                <div class="tafi-input price-input product-edit-input">
+                                                                    <div class="tafi-input detail-info-input" style="height: 40px;">
+                                                                        <span class="detail-info__name">@Model.SANPHAM.SOLUONGTON</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="edit-row">
+                                                <div class="edit-row-left edit-label">
+                                                    <span><span style="color: red;">*</span> Giá giảm</span>
+                                                </div>
+                                                <div class="degrade-wrap edit-row-right-medium">
+                                                    <div class="custom-len-calc-input product-edit-form-item">
+                                                        <div class="product-edit-form-item-content">
+                                                            <div class="popover-wrap">
+                                                                <div class="tafi-input price-input product-edit-input">
+                                                                    <div class="tafi-input detail-info-input" style="height: 40px;">
+                                                                        <span class="detail-info__name">@string.Format("{0:N0} đ", Model.SANPHAM.GIAGIAM)</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+
+                            <div class="product-selected-fix shopee-fix-bottom-card">
+                                <div class="fix-container">
+                                    <div class="container1">
+                                        <div class="container-left"></div>
+                                        <div class="container-right btn-group">
+                                            <a href="@Url.Action("QlSanPham","QlSanPham")" class="tafi-button--xl-large tafi-button tafi-button--normal"><span>Hủy</span></a>
+                                            <button class="tafi-button--xl-large tafi-button tafi-button-primary tafi-button--normal" style="margin-left: 13px;" id="button-save" ><span>Lưu</span></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
